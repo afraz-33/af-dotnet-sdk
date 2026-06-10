@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/ApifreaksApi.Test/ApifreaksApi.Test.csproj" />
+  <Project Path="src/ApifreaksApi/ApifreaksApi.csproj" />
+</Solution>

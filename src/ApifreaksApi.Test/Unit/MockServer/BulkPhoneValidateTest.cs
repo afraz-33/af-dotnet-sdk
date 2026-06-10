@@ -1,0 +1,276 @@
+using ApifreaksApi;
+using ApifreaksApi.Test.Utils;
+using NUnit.Framework;
+
+namespace ApifreaksApi.Test.Unit.MockServer;
+
+[TestFixture]
+[Parallelizable(ParallelScope.Self)]
+public class BulkPhoneValidateTest : BaseMockServerTest
+{
+    [NUnit.Framework.Test]
+    public async Task MockServerTest_1()
+    {
+        const string requestJson = """
+            {
+              "numbers": [
+                {
+                  "number": "+14155552671"
+                },
+                {
+                  "number": "+447911123456"
+                },
+                {
+                  "number": "+919876543210"
+                }
+              ]
+            }
+            """;
+
+        const string mockResponse = """
+            [
+              {
+                "raw_input": {
+                  "number": "+14155552671",
+                  "region": "US",
+                  "dialer_region": "dialer_region"
+                },
+                "possible": true,
+                "valid": true,
+                "country_prefix": 1,
+                "national_number": 4155552671,
+                "country_code": "US",
+                "carrier": "Verizon Communications",
+                "location": "San Francisco, CA",
+                "time_zones": [
+                  "America/Los_Angeles"
+                ],
+                "line_type": "MOBILE",
+                "formats": {
+                  "E164": "+14155552671",
+                  "International": "+1 415-555-2671",
+                  "National": "(415) 555-2671",
+                  "RFC3966": "tel:+1-415-555-2671"
+                },
+                "area_code_length": 3,
+                "ndc_length": 3,
+                "can_be_internationally_dialled": true
+              }
+            ]
+            """;
+
+        Server
+            .Given(
+                WireMock
+                    .RequestBuilders.Request.Create()
+                    .WithPath("/v1.0/phone/validation/bulk")
+                    .WithParam("apiKey", "apiKey")
+                    .WithHeader("Content-Type", "application/json")
+                    .UsingPost()
+                    .WithBodyAsJson(requestJson)
+            )
+            .RespondWith(
+                WireMock
+                    .ResponseBuilders.Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(mockResponse)
+            );
+
+        var response = await Client.BulkPhoneValidateAsync(
+            new BulkPhoneValidateRequest
+            {
+                ApiKey = "apiKey",
+                Numbers = new List<BulkPhoneValidateRequestNumbersItem>()
+                {
+                    new BulkPhoneValidateRequestNumbersItem { Number = "+14155552671" },
+                    new BulkPhoneValidateRequestNumbersItem { Number = "+447911123456" },
+                    new BulkPhoneValidateRequestNumbersItem { Number = "+919876543210" },
+                },
+            }
+        );
+        JsonAssert.AreEqual(response, mockResponse);
+    }
+
+    [NUnit.Framework.Test]
+    public async Task MockServerTest_2()
+    {
+        const string requestJson = """
+            {
+              "numbers": [
+                {
+                  "number": "03301112233",
+                  "region": "PK"
+                },
+                {
+                  "number": "number",
+                  "region": "GB"
+                },
+                {
+                  "number": "number",
+                  "region": "IN"
+                }
+              ]
+            }
+            """;
+
+        const string mockResponse = """
+            [
+              {
+                "raw_input": {
+                  "number": "+14155552671",
+                  "region": "US",
+                  "dialer_region": "dialer_region"
+                },
+                "possible": true,
+                "valid": true,
+                "country_prefix": 1,
+                "national_number": 4155552671,
+                "country_code": "US",
+                "carrier": "Verizon Communications",
+                "location": "San Francisco, CA",
+                "time_zones": [
+                  "America/Los_Angeles"
+                ],
+                "line_type": "MOBILE",
+                "formats": {
+                  "E164": "+14155552671",
+                  "International": "+1 415-555-2671",
+                  "National": "(415) 555-2671",
+                  "RFC3966": "tel:+1-415-555-2671"
+                },
+                "area_code_length": 3,
+                "ndc_length": 3,
+                "can_be_internationally_dialled": true
+              }
+            ]
+            """;
+
+        Server
+            .Given(
+                WireMock
+                    .RequestBuilders.Request.Create()
+                    .WithPath("/v1.0/phone/validation/bulk")
+                    .WithParam("apiKey", "apiKey")
+                    .WithHeader("Content-Type", "application/json")
+                    .UsingPost()
+                    .WithBodyAsJson(requestJson)
+            )
+            .RespondWith(
+                WireMock
+                    .ResponseBuilders.Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(mockResponse)
+            );
+
+        var response = await Client.BulkPhoneValidateAsync(
+            new BulkPhoneValidateRequest
+            {
+                ApiKey = "apiKey",
+                Numbers = new List<BulkPhoneValidateRequestNumbersItem>()
+                {
+                    new BulkPhoneValidateRequestNumbersItem
+                    {
+                        Number = "03301112233",
+                        Region = "PK",
+                    },
+                    new BulkPhoneValidateRequestNumbersItem { Number = "number", Region = "GB" },
+                    new BulkPhoneValidateRequestNumbersItem { Number = "number", Region = "IN" },
+                },
+            }
+        );
+        JsonAssert.AreEqual(response, mockResponse);
+    }
+
+    [NUnit.Framework.Test]
+    public async Task MockServerTest_3()
+    {
+        const string requestJson = """
+            {
+              "numbers": [
+                {
+                  "number": "+14155552671"
+                },
+                {
+                  "number": "03301112233",
+                  "region": "PK"
+                },
+                {
+                  "number": "0014155552671",
+                  "dialer_region": "AU"
+                }
+              ]
+            }
+            """;
+
+        const string mockResponse = """
+            [
+              {
+                "raw_input": {
+                  "number": "+14155552671",
+                  "region": "US",
+                  "dialer_region": "dialer_region"
+                },
+                "possible": true,
+                "valid": true,
+                "country_prefix": 1,
+                "national_number": 4155552671,
+                "country_code": "US",
+                "carrier": "Verizon Communications",
+                "location": "San Francisco, CA",
+                "time_zones": [
+                  "America/Los_Angeles"
+                ],
+                "line_type": "MOBILE",
+                "formats": {
+                  "E164": "+14155552671",
+                  "International": "+1 415-555-2671",
+                  "National": "(415) 555-2671",
+                  "RFC3966": "tel:+1-415-555-2671"
+                },
+                "area_code_length": 3,
+                "ndc_length": 3,
+                "can_be_internationally_dialled": true
+              }
+            ]
+            """;
+
+        Server
+            .Given(
+                WireMock
+                    .RequestBuilders.Request.Create()
+                    .WithPath("/v1.0/phone/validation/bulk")
+                    .WithParam("apiKey", "apiKey")
+                    .WithHeader("Content-Type", "application/json")
+                    .UsingPost()
+                    .WithBodyAsJson(requestJson)
+            )
+            .RespondWith(
+                WireMock
+                    .ResponseBuilders.Response.Create()
+                    .WithStatusCode(200)
+                    .WithBody(mockResponse)
+            );
+
+        var response = await Client.BulkPhoneValidateAsync(
+            new BulkPhoneValidateRequest
+            {
+                ApiKey = "apiKey",
+                Numbers = new List<BulkPhoneValidateRequestNumbersItem>()
+                {
+                    new BulkPhoneValidateRequestNumbersItem { Number = "+14155552671" },
+                    new BulkPhoneValidateRequestNumbersItem
+                    {
+                        Number = "03301112233",
+                        Region = "PK",
+                    },
+                    new BulkPhoneValidateRequestNumbersItem
+                    {
+                        Number = "0014155552671",
+                        DialerRegion = "AU",
+                    },
+                },
+            }
+        );
+        JsonAssert.AreEqual(response, mockResponse);
+    }
+}

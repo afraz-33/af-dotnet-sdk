@@ -1,0 +1,115 @@
+using ApifreaksApi.Core;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
+
+namespace ApifreaksApi;
+
+[JsonConverter(typeof(AirQualityRequestFormat.AirQualityRequestFormatSerializer))]
+[Serializable]
+public readonly record struct AirQualityRequestFormat : IStringEnum
+{
+    public static readonly AirQualityRequestFormat Json = new(Values.Json);
+
+    public static readonly AirQualityRequestFormat Xml = new(Values.Xml);
+
+    public AirQualityRequestFormat(string value)
+    {
+        Value = value;
+    }
+
+    /// <summary>
+    /// The string value of the enum.
+    /// </summary>
+    public string Value { get; }
+
+    /// <summary>
+    /// Create a string enum with the given value.
+    /// </summary>
+    public static AirQualityRequestFormat FromCustom(string value)
+    {
+        return new AirQualityRequestFormat(value);
+    }
+
+    public bool Equals(string? other)
+    {
+        return Value.Equals(other);
+    }
+
+    /// <summary>
+    /// Returns the string value of the enum.
+    /// </summary>
+    public override string ToString()
+    {
+        return Value;
+    }
+
+    public static bool operator ==(AirQualityRequestFormat value1, string value2) =>
+        value1.Value.Equals(value2);
+
+    public static bool operator !=(AirQualityRequestFormat value1, string value2) =>
+        !value1.Value.Equals(value2);
+
+    public static explicit operator string(AirQualityRequestFormat value) => value.Value;
+
+    public static explicit operator AirQualityRequestFormat(string value) => new(value);
+
+    internal class AirQualityRequestFormatSerializer : JsonConverter<AirQualityRequestFormat>
+    {
+        public override AirQualityRequestFormat Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new AirQualityRequestFormat(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            AirQualityRequestFormat value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override AirQualityRequestFormat ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new AirQualityRequestFormat(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            AirQualityRequestFormat value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
+
+    /// <summary>
+    /// Constant strings for enum values
+    /// </summary>
+    [Serializable]
+    public static class Values
+    {
+        public const string Json = "json";
+
+        public const string Xml = "xml";
+    }
+}

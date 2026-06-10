@@ -1,0 +1,70 @@
+using ApifreaksApi.Core;
+using global::System.Text.Json.Serialization;
+
+namespace ApifreaksApi;
+
+[Serializable]
+public record PdfRemovePagesRequest
+{
+    /// <summary>
+    /// Your API key
+    /// </summary>
+    [JsonIgnore]
+    public required string ApiKey { get; set; }
+
+    /// <summary>
+    /// Specifies the desired format for the API response. Choose 'json' for a JSON object or 'xml' for an XML structure.
+    /// </summary>
+    [JsonIgnore]
+    public PdfRemovePagesRequestFormat? Format { get; set; }
+
+    /// <summary>
+    /// The unique identifier of a PDF file already uploaded to the API Freaks server. Use this as an alternative to uploading a new file directly.
+    /// </summary>
+    [JsonIgnore]
+    public string? FileId { get; set; }
+
+    /// <summary>
+    /// If set to `true`, the input file(s) will be permanently deleted from the server immediately after the output PDF is generated.
+    /// </summary>
+    [JsonIgnore]
+    public bool? Destroy { get; set; }
+
+    /// <summary>
+    /// The desired name for the output PDF file after pages have been removed. If not provided, a default name will be assigned.
+    /// </summary>
+    [JsonIgnore]
+    public string? Output { get; set; }
+
+    /// <summary>
+    /// Specifies which pages to remove from the PDF. Accepts individual page numbers (e.g., '1,7') and/or ascending page ranges (e.g., '3-5'). Use commas to separate entries and hyphens for ranges. Reverse ranges (e.g., '5-3') are not allowed. Alternatively, you may provide only one of the following keywords: 'even' (removes all even-numbered pages), 'odd' (removes all odd-numbered pages), or 'last' (removes only the last page). The keyword 'all' is not supported for this operation. Examples: '1,3-5', 'even'. Mixing special keywords with specific pages/ranges is not allowed.
+    /// </summary>
+    [JsonIgnore]
+    public required string Pages { get; set; }
+
+    /// <summary>
+    /// The URL to which the webhook notification will be sent after the task is completed.
+    /// </summary>
+    [JsonIgnore]
+    public string? WebhookUrl { get; set; }
+
+    /// <summary>
+    /// If true, a notification will also be sent by email in case the webhook request fails all the retries.  The email notification will be sent to the requesting user or their organization’s admin if part of one.
+    /// </summary>
+    [JsonIgnore]
+    public bool? WebhookFailureNotification { get; set; }
+
+    /// <summary>
+    /// Optional custom header for webhook requests. Format: `Key:Value` (e.g., `Authorization:Bearer token123`). This will be sent as an HTTP header in the webhook call.
+    /// </summary>
+    [JsonIgnore]
+    public string? WebhookAuthorization { get; set; }
+
+    public FileParameter? File { get; set; }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
+}

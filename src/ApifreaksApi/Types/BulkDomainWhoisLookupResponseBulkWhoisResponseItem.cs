@@ -1,0 +1,79 @@
+using ApifreaksApi.Core;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
+
+namespace ApifreaksApi;
+
+[Serializable]
+public record BulkDomainWhoisLookupResponseBulkWhoisResponseItem : IJsonOnDeserialized
+{
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
+    [JsonPropertyName("status")]
+    public bool? Status { get; set; }
+
+    [JsonPropertyName("domain_name")]
+    public string? DomainName { get; set; }
+
+    [JsonPropertyName("query_time")]
+    public DateTime? QueryTime { get; set; }
+
+    [JsonPropertyName("whois_server")]
+    public string? WhoisServer { get; set; }
+
+    [JsonPropertyName("domain_registered")]
+    public BulkDomainWhoisLookupResponseBulkWhoisResponseItemDomainRegistered? DomainRegistered { get; set; }
+
+    [JsonPropertyName("create_date")]
+    public DateOnly? CreateDate { get; set; }
+
+    [JsonPropertyName("update_date")]
+    public DateOnly? UpdateDate { get; set; }
+
+    [JsonPropertyName("expiry_date")]
+    public DateOnly? ExpiryDate { get; set; }
+
+    [JsonPropertyName("domain_registrar")]
+    public BulkDomainWhoisLookupResponseBulkWhoisResponseItemDomainRegistrar? DomainRegistrar { get; set; }
+
+    [JsonPropertyName("reseller_contact")]
+    public BulkDomainWhoisLookupResponseBulkWhoisResponseItemResellerContact? ResellerContact { get; set; }
+
+    [JsonPropertyName("registrant_contact")]
+    public BulkDomainWhoisLookupResponseBulkWhoisResponseItemRegistrantContact? RegistrantContact { get; set; }
+
+    [JsonPropertyName("administrative_contact")]
+    public BulkDomainWhoisLookupResponseBulkWhoisResponseItemAdministrativeContact? AdministrativeContact { get; set; }
+
+    [JsonPropertyName("technical_contact")]
+    public BulkDomainWhoisLookupResponseBulkWhoisResponseItemTechnicalContact? TechnicalContact { get; set; }
+
+    [JsonPropertyName("billing_contact")]
+    public BulkDomainWhoisLookupResponseBulkWhoisResponseItemBillingContact? BillingContact { get; set; }
+
+    [JsonPropertyName("name_servers")]
+    public IEnumerable<string>? NameServers { get; set; }
+
+    [JsonPropertyName("domain_status")]
+    public IEnumerable<string>? DomainStatus { get; set; }
+
+    [JsonPropertyName("whois_raw_domain")]
+    public string? WhoisRawDomain { get; set; }
+
+    [JsonPropertyName("registry_data")]
+    public BulkDomainWhoisLookupResponseBulkWhoisResponseItemRegistryData? RegistryData { get; set; }
+
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
+}

@@ -1,0 +1,44 @@
+using ApifreaksApi.Core;
+using global::System.Text.Json.Serialization;
+
+namespace ApifreaksApi;
+
+[Serializable]
+public record ZipcodeSearchByRegionRequest
+{
+    /// <summary>
+    /// Your API key
+    /// </summary>
+    [JsonIgnore]
+    public required string ApiKey { get; set; }
+
+    /// <summary>
+    /// Format of the response.
+    /// </summary>
+    [JsonIgnore]
+    public ZipcodeSearchByRegionRequestFormat? Format { get; set; }
+
+    /// <summary>
+    /// Country code in ISO 3166-1 alpha-2 format.
+    /// </summary>
+    [JsonIgnore]
+    public required string Country { get; set; }
+
+    /// <summary>
+    /// Name of the region, state or province associated with the country.
+    /// </summary>
+    [JsonIgnore]
+    public required string Region { get; set; }
+
+    /// <summary>
+    /// Page no. to retrieve paginated results.
+    /// </summary>
+    [JsonIgnore]
+    public int? Page { get; set; }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
+}
