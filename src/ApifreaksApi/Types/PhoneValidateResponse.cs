@@ -39,7 +39,7 @@ public record PhoneValidateResponse : IJsonOnDeserialized
     /// National significant number without the country code.
     /// </summary>
     [JsonPropertyName("national_number")]
-    public int? NationalNumber { get; set; }
+    public string? NationalNumber { get; set; }
 
     /// <summary>
     /// ISO-2 country code inferred from the number.
